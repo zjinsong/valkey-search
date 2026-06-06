@@ -28,6 +28,25 @@
 
 > 📖 完整的 FT.SEARCH / FT.AGGREGATE 命令语法、REDUCE 函数、APPLY 表达式和结果解析见 [`COMMANDS.md`](./COMMANDS.md)。
 
+#### 聚合命令速览
+
+```bash
+# 基本结构
+FT.AGGREGATE <索引> <查询条件>  LOAD <n> <字段>  GROUPBY <n> <字段>  REDUCE <函数> <参数数> [字段] AS <别名>  SORTBY <n> <字段> <ASC|DESC>
+
+# 各类别商品数量
+FT.AGGREGATE products_idx "@price:[-inf +inf]" LOAD 1 @category GROUPBY 1 @category REDUCE COUNT 0 AS count SORTBY 2 @count DESC
+
+# 各品牌库存总价值（APPLY 算单品价值 → 按品牌求和）
+FT.AGGREGATE products_idx "@price:[-inf +inf]" LOAD 3 @brand @price @stock APPLY "@price * @stock" AS val GROUPBY 1 @brand REDUCE SUM 1 @val AS total SORTBY 2 @total DESC
+```
+
+速记要点：
+- 查询条件**不能用 `*`**，用 `@price:[-inf +inf]` 表示全部
+- GROUPBY 的字段**必须先 LOAD**
+- 数字参数表示「后面跟几个参数」：`LOAD 2`=载入2字段，`REDUCE COUNT 0`=无字段参数，`REDUCE AVG 1 @price`=1个字段，`SORTBY 2`=字段+方向
+- 常用 REDUCE：`COUNT` / `SUM` / `AVG` / `MIN` / `MAX` / `COUNT_DISTINCT`
+
 ### 3. 向量搜索与热冷分层
 
 内置 HNSW/FLAT 向量索引，结合 S3 Vectors（冷归档）和 Neptune Analytics（图谱记忆）构建 RAG / AI Agent 记忆系统。详见 [`vector-architecture.md`](./vector-architecture.md)。
