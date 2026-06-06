@@ -52,6 +52,16 @@ if st.sidebar.button("🔄 初始化数据 & 索引"):
         {"name": "iPad Air M3", "description": "Apple tablet with M3 chip lightweight", "category": "electronics", "brand": "Apple", "price": "5999", "rating": "4.7", "stock": "250"},
         {"name": "Samsung OLED TV 65", "description": "Samsung 65 inch OLED 4K smart TV", "category": "electronics", "brand": "Samsung", "price": "12999", "rating": "4.8", "stock": "60"},
         {"name": "苹果手机 iPhone", "description": "苹果公司旗舰智能手机 中文测试", "category": "electronics", "brand": "苹果", "price": "9999", "rating": "4.8", "stock": "100"},
+        {"name": "华为 Mate 70 Pro", "description": "华为旗舰智能手机 麒麟芯片 卫星通信", "category": "electronics", "brand": "华为", "price": "8999", "rating": "4.8", "stock": "300"},
+        {"name": "小米手机 15 Ultra", "description": "小米旗舰手机 徕卡影像 骁龙处理器", "category": "electronics", "brand": "小米", "price": "6499", "rating": "4.7", "stock": "450"},
+        {"name": "华为笔记本 MateBook", "description": "华为轻薄笔记本电脑 全面屏 长续航", "category": "electronics", "brand": "华为", "price": "7999", "rating": "4.6", "stock": "120"},
+        {"name": "小米平板 7 Pro", "description": "小米高性能平板电脑 大屏护眼", "category": "electronics", "brand": "小米", "price": "3299", "rating": "4.6", "stock": "200"},
+        {"name": "华为手表 GT5", "description": "华为智能运动手表 健康监测 长续航", "category": "wearable", "brand": "华为", "price": "1888", "rating": "4.7", "stock": "350"},
+        {"name": "小米手环 9", "description": "小米智能手环 心率血氧监测 超长待机", "category": "wearable", "brand": "小米", "price": "299", "rating": "4.5", "stock": "800"},
+        {"name": "华为耳机 FreeBuds Pro", "description": "华为无线降噪耳机 高清音质 中文测试", "category": "audio", "brand": "华为", "price": "1499", "rating": "4.6", "stock": "400"},
+        {"name": "小米音箱 Sound Pro", "description": "小米智能音箱 高保真 语音助手", "category": "audio", "brand": "小米", "price": "799", "rating": "4.4", "stock": "260"},
+        {"name": "小米扫地机器人", "description": "小米全自动扫拖机器人 激光导航 智能避障", "category": "home", "brand": "小米", "price": "2699", "rating": "4.5", "stock": "150"},
+        {"name": "华为路由器 BE7000", "description": "华为千兆 WiFi7 路由器 全屋覆盖", "category": "network", "brand": "华为", "price": "999", "rating": "4.6", "stock": "320"},
     ]
     for i, p in enumerate(products):
         client.hset(f"product:{i+1}", mapping=p)

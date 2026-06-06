@@ -26,6 +26,8 @@
 - `SORTBY` 排序
 - 写后即读一致性：数据写入后立即可被聚合，无刷新延迟
 
+> 📖 完整的 FT.SEARCH / FT.AGGREGATE 命令语法、REDUCE 函数、APPLY 表达式和结果解析见 [`COMMANDS.md`](./COMMANDS.md)。
+
 ### 3. 向量搜索与热冷分层
 
 内置 HNSW/FLAT 向量索引，结合 S3 Vectors（冷归档）和 Neptune Analytics（图谱记忆）构建 RAG / AI Agent 记忆系统。详见 [`vector-architecture.md`](./vector-architecture.md)。
@@ -169,6 +171,7 @@ ElastiCache 仅支持 RDB 快照，节点故障替换时**可能丢数据**，�
 |------|------|
 | `README.md` | 项目总览（本文件） |
 | `DEPLOYMENT.md` | 完整创建/部署过程与连接说明 |
+| `COMMANDS.md` | FT.SEARCH / FT.AGGREGATE 命令语法详解 |
 | `SECURITY_GROUP.md` | 安全组配置说明 |
 | `cloudformation.yaml` | CloudFormation 一键部署模板（参数化，无敏感信息） |
 | `vector-architecture.md` | 向量搜索架构指南（S3 Vectors / Neptune / Mem0 / RAG） |
