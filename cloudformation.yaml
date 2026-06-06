@@ -1,0 +1,128 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  ElastiCache Valkey 9.0 cluster with search and aggregation support.
+  Includes subnet group, parameter group (memory reserve), and security group rule.
+
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC where ElastiCache will be deployed
+
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Subnets for ElastiCache (at least 2 AZs recommended)
+
+  AppSecurityGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Security group of the application (EC2/Lambda) that will access ElastiCache
+
+  NodeType:
+    Type: String
+    Default: cache.t4g.micro
+    AllowedValues:
+      - cache.t4g.micro
+      - cache.t4g.small
+      - cache.t4g.medium
+      - cache.r7g.large
+      - cache.r7g.xlarge
+    Description: >
+      Node type. Use t4g.micro/small for dev/test (requires reserved-memory-percent config).
+      Use r7g.large+ for production search workloads.
+
+  ClusterName:
+    Type: String
+    Default: valkey9-search
+    Description: Name for the ElastiCache replication group
+
+  ReservedMemoryPercent:
+    Type: Number
+    Default: 25
+    MinValue: 0
+    MaxValue: 70
+    Description: >
+      Percentage of memory reserved for non-cache use.
+      Required for search: micro=50, small=30, larger instances=25 (default).
+
+Conditions:
+  IsMicroOrSmall: !Or
+    - !Equals [!Ref NodeType, cache.t4g.micro]
+    - !Equals [!Ref NodeType, cache.t4g.small]
+
+Resources:
+
+  # ── Security Group Rule ──────────────────────────────────────────────────────
+  ElastiCacheIngressRule:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref AppSecurityGroupId
+      IpProtocol: tcp
+      FromPort: 6379
+      ToPort: 6379
+      SourceSecurityGroupId: !Ref AppSecurityGroupId
+      Description: Allow Valkey access within the same security group
+
+  # ── Subnet Group ─────────────────────────────────────────────────────────────
+  ElastiCacheSubnetGroup:
+    Type: AWS::ElastiCache::SubnetGroup
+    Properties:
+      CacheSubnetGroupName: !Sub ${ClusterName}-subnet-group
+      Description: Subnet group for Valkey search cluster
+      SubnetIds: !Ref SubnetIds
+
+  # ── Parameter Group (with search memory reserve) ─────────────────────────────
+  ElastiCacheParameterGroup:
+    Type: AWS::ElastiCache::ParameterGroup
+    Properties:
+      CacheParameterGroupFamily: valkey9
+      Description: !Sub Valkey 9 parameter group for ${ClusterName} with search support
+      Properties:
+        reserved-memory-percent: !Sub "${ReservedMemoryPercent}"
+
+  # ── Replication Group (Valkey 9.0) ───────────────────────────────────────────
+  ElastiCacheCluster:
+    Type: AWS::ElastiCache::ReplicationGroup
+    Properties:
+      ReplicationGroupId: !Ref ClusterName
+      ReplicationGroupDescription: !Sub Valkey 9.0 search cluster - ${ClusterName}
+      Engine: valkey
+      EngineVersion: "9.0"
+      CacheNodeType: !Ref NodeType
+      NumNodeGroups: 1
+      ReplicasPerNodeGroup: 0
+      CacheSubnetGroupName: !Ref ElastiCacheSubnetGroup
+      SecurityGroupIds:
+        - !Ref AppSecurityGroupId
+      CacheParameterGroupName: !Ref ElastiCacheParameterGroup
+      TransitEncryptionEnabled: false
+      AtRestEncryptionEnabled: true
+      AutomaticFailoverEnabled: false
+      MultiAZEnabled: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Name
+          Value: !Ref ClusterName
+        - Key: Purpose
+          Value: valkey-search-demo
+
+Outputs:
+  PrimaryEndpoint:
+    Description: Primary endpoint for Valkey cluster
+    Value: !Sub
+      - "${Endpoint}:6379"
+      - Endpoint: !GetAtt ElastiCacheCluster.PrimaryEndPoint.Address
+    Export:
+      Name: !Sub ${AWS::StackName}-Endpoint
+
+  ClusterName:
+    Description: Replication group ID
+    Value: !Ref ClusterName
+
+  ParameterGroupName:
+    Description: Parameter group name (with reserved-memory-percent configured)
+    Value: !Ref ElastiCacheParameterGroup
+
+  UsageNote:
+    Description: Quick start command
+    Value: !Sub
+      - "redis-cli -h ${Endpoint} -p 6379 PING"
+      - Endpoint: !GetAtt ElastiCacheCluster.PrimaryEndPoint.Address

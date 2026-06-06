@@ -1,0 +1,26 @@
+# 凭证与密钥
+*.pem
+*.key
+.env
+.env.*
+credentials
+*credentials*
+aws.config
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# 本地配置/真实资源信息（防止误提交）
+*.local
+config.local.*
+endpoints.txt
+
+# 系统
+.DS_Store
+Thumbs.db
+*.log

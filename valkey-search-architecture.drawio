@@ -1,0 +1,249 @@
+<mxfile host="app.diagrams.net" modified="2026-05-31" version="21.0.0">
+  <diagram name="Valkey Search Architecture" id="valkey-search-arch">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Background -->
+        <mxCell id="bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#d6b656;fontColor=#333333;fontSize=14;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1560" height="1060" as="geometry" />
+        </mxCell>
+
+        <!-- Title -->
+        <mxCell id="title" value="ElastiCache Valkey 9.0 — 实时搜索 &amp; 聚合架构" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="40" y="50" width="1560" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ===== LAYER 1: CLIENT ===== -->
+        <mxCell id="layer1_bg" value="客户端 / 应用层" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="80" y="120" width="1480" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- Web App -->
+        <mxCell id="webapp" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.general;labelBackgroundColor=#ffffff;sketch=0;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="170" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="webapp_label" value="Web App" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="235" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Mobile -->
+        <mxCell id="mobile" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.mobile;labelBackgroundColor=#ffffff;sketch=0;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="340" y="170" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mobile_label" value="Mobile App" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="235" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda -->
+        <mxCell id="lambda" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;labelBackgroundColor=#ffffff;sketch=0;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="520" y="170" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lambda_label" value="Lambda" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="235" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- EC2 -->
+        <mxCell id="ec2" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;labelBackgroundColor=#ffffff;sketch=0;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="700" y="170" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ec2_label" value="EC2 / ECS" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="235" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Bedrock -->
+        <mxCell id="bedrock" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock;labelBackgroundColor=#ffffff;sketch=0;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="880" y="170" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bedrock_label" value="Bedrock (LLM)" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="855" y="235" width="110" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ===== LAYER 2: ELASTICACHE VALKEY ===== -->
+        <mxCell id="layer2_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="80" y="330" width="1480" height="480" as="geometry" />
+        </mxCell>
+
+        <!-- ElastiCache Icon -->
+        <mxCell id="ec_icon" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elasticache;labelBackgroundColor=#ffffff;sketch=0;" vertex="1" parent="1">
+          <mxGeometry x="100" y="360" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ec_title" value="Amazon ElastiCache&#xa;Valkey 9.0" style="text;html=1;align=left;fontSize=14;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="170" y="375" width="220" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- FT.SEARCH Box -->
+        <mxCell id="ftsearch_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#00aa44;strokeColor=#007733;fontSize=12;fontStyle=1;fontColor=white;" vertex="1" parent="1">
+          <mxGeometry x="100" y="460" width="680" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="ftsearch_title" value="FT.SEARCH — 实时搜索" style="text;html=1;align=center;fontSize=15;fontStyle=1;fontColor=white;" vertex="1" parent="1">
+          <mxGeometry x="100" y="465" width="680" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Full Text Search -->
+        <mxCell id="fts1" value="全文搜索&#xa;prefix · fuzzy · phrase" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#00aa44;fontSize=12;fontStyle=1;fontColor=#00aa44;" vertex="1" parent="1">
+          <mxGeometry x="120" y="510" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Exact Match -->
+        <mxCell id="fts2" value="精确匹配&#xa;Tag · ID · Category" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#00aa44;fontSize=12;fontStyle=1;fontColor=#00aa44;" vertex="1" parent="1">
+          <mxGeometry x="330" y="510" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Numeric Range -->
+        <mxCell id="fts3" value="数值范围&#xa;price · date · score" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#00aa44;fontSize=12;fontStyle=1;fontColor=#00aa44;" vertex="1" parent="1">
+          <mxGeometry x="540" y="510" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Vector KNN -->
+        <mxCell id="fts4" value="向量搜索 KNN&#xa;HNSW · FLAT · Hybrid" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0066cc;fontSize=12;fontStyle=1;fontColor=#0066cc;" vertex="1" parent="1">
+          <mxGeometry x="120" y="610" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Hybrid -->
+        <mxCell id="fts5" value="混合搜索&#xa;文本 + 向量 + 过滤" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9933cc;fontSize=12;fontStyle=1;fontColor=#9933cc;" vertex="1" parent="1">
+          <mxGeometry x="330" y="610" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Write consistency -->
+        <mxCell id="fts6" value="写后即搜&#xa;同步索引 · 微秒延迟" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ff6600;fontSize=12;fontStyle=1;fontColor=#ff6600;" vertex="1" parent="1">
+          <mxGeometry x="540" y="610" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- FT.AGGREGATE Box -->
+        <mxCell id="ftagg_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0066cc;strokeColor=#004499;fontSize=12;fontStyle=1;fontColor=white;" vertex="1" parent="1">
+          <mxGeometry x="820" y="460" width="700" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="ftagg_title" value="FT.AGGREGATE — 实时聚合" style="text;html=1;align=center;fontSize=15;fontStyle=1;fontColor=white;" vertex="1" parent="1">
+          <mxGeometry x="820" y="465" width="700" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- GROUPBY -->
+        <mxCell id="agg1" value="GROUPBY&#xa;按维度分组" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0066cc;fontSize=12;fontStyle=1;fontColor=#0066cc;" vertex="1" parent="1">
+          <mxGeometry x="840" y="510" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- REDUCE -->
+        <mxCell id="agg2" value="REDUCE&#xa;COUNT · SUM · AVG · MAX" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0066cc;fontSize=12;fontStyle=1;fontColor=#0066cc;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="510" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- APPLY -->
+        <mxCell id="agg3" value="APPLY&#xa;计算字段 · 表达式" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0066cc;fontSize=12;fontStyle=1;fontColor=#0066cc;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="510" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- SORTBY -->
+        <mxCell id="agg4" value="SORTBY + LIMIT&#xa;排序 · 分页" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0066cc;fontSize=12;fontStyle=1;fontColor=#0066cc;" vertex="1" parent="1">
+          <mxGeometry x="840" y="610" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- FILTER -->
+        <mxCell id="agg5" value="FILTER&#xa;管道中间过滤" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0066cc;fontSize=12;fontStyle=1;fontColor=#0066cc;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="610" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Pipeline -->
+        <mxCell id="agg6" value="Pipeline&#xa;多步骤链式分析" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ff6600;fontSize=12;fontStyle=1;fontColor=#ff6600;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="610" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Index -->
+        <mxCell id="index_box" value="FT.CREATE Index&#xa;TEXT · TAG · NUMERIC · VECTOR" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#333;fontSize=13;fontStyle=1;fontColor=white;" vertex="1" parent="1">
+          <mxGeometry x="430" y="730" width="680" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ===== LAYER 3: DATA SOURCES ===== -->
+        <mxCell id="layer3_bg" value="数据源 / 存储层" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="80" y="860" width="1480" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- DynamoDB -->
+        <mxCell id="dynamo" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;labelBackgroundColor=#ffffff;sketch=0;" vertex="1" parent="1">
+          <mxGeometry x="160" y="910" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="dynamo_label" value="DynamoDB" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="975" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- RDS -->
+        <mxCell id="rds" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.rds;labelBackgroundColor=#ffffff;sketch=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="910" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rds_label" value="RDS / Aurora" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="975" width="110" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- S3 -->
+        <mxCell id="s3" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;labelBackgroundColor=#ffffff;sketch=0;" vertex="1" parent="1">
+          <mxGeometry x="560" y="910" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="s3_label" value="S3 (原始文件)" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="535" y="975" width="110" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Vectors -->
+        <mxCell id="s3vec" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;labelBackgroundColor=#ffffff;sketch=0;" vertex="1" parent="1">
+          <mxGeometry x="760" y="910" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="s3vec_label" value="S3 Vectors&#xa;(冷向量归档)" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="735" y="975" width="110" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Kinesis -->
+        <mxCell id="kinesis" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.kinesis;labelBackgroundColor=#ffffff;sketch=0;" vertex="1" parent="1">
+          <mxGeometry x="960" y="910" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kinesis_label" value="Kinesis (CDC)" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="935" y="975" width="110" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Neptune -->
+        <mxCell id="neptune" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.neptune;labelBackgroundColor=#ffffff;sketch=0;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="910" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="neptune_label" value="Neptune&#xa;(图谱记忆)" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1135" y="975" width="110" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- CloudWatch -->
+        <mxCell id="cw" value="" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudwatch;labelBackgroundColor=#ffffff;sketch=0;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="910" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cw_label" value="CloudWatch&#xa;(监控指标)" style="text;html=1;align=center;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1335" y="975" width="110" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ARROWS ===== -->
+        <!-- Client to ElastiCache -->
+        <mxCell id="arr1" value="FT.SEARCH" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.2;entryY=0;entryDx=0;entryDy=0;strokeColor=#00aa44;fontColor=#00aa44;fontStyle=1;fontSize=11;" edge="1" source="webapp" target="ftsearch_bg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr2" value="FT.AGGREGATE" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#0066cc;fontColor=#0066cc;fontStyle=1;fontSize=11;" edge="1" source="ec2" target="ftagg_bg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr3" value="Embedding" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.7;entryY=0;entryDx=0;entryDy=0;strokeColor=#9933cc;fontColor=#9933cc;fontStyle=1;fontSize=11;" edge="1" source="bedrock" target="ftsearch_bg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Data sources to ElastiCache -->
+        <mxCell id="arr4" value="写入/同步" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.15;entryY=1;entryDx=0;entryDy=0;strokeColor=#b85450;fontColor=#b85450;fontStyle=1;fontSize=11;" edge="1" source="dynamo" target="index_box" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr5" value="CDC" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#b85450;fontColor=#b85450;fontStyle=1;fontSize=11;" edge="1" source="kinesis" target="index_box" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr6" value="冷归档" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#ff6600;fontColor=#ff6600;fontStyle=1;fontSize=11;dashed=1;" edge="1" source="s3vec" target="ftsearch_bg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Performance badge -->
+        <mxCell id="perf" value="⚡ 微秒延迟 · 百万 QPS · 写后即搜" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#333;fontSize=14;fontStyle=1;fontColor=#ffd700;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="360" width="460" height="50" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

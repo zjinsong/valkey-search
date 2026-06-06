@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>ElastiCache Valkey 9.0 新功能</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 40px 20px; }
+  .card { background: white; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.1); padding: 40px; max-width: 900px; width: 100%; }
+
+  h1 { font-size: 22px; color: #1a1a2e; text-align: center; margin-bottom: 6px; }
+  .subtitle { text-align: center; color: #666; font-size: 13px; margin-bottom: 36px; }
+
+  /* App row */
+  .app-row { display: flex; justify-content: center; align-items: center; gap: 24px; margin-bottom: 32px; }
+  .app-box { background: #e8f4fd; border: 2px solid #5b9bd5; border-radius: 10px; padding: 12px 24px; font-size: 14px; font-weight: 600; color: #1a1a2e; }
+  .bedrock-box { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .bedrock-box img { width: 48px; height: 48px; }
+  .bedrock-box span { font-size: 11px; color: #555; font-weight: 600; }
+  .arrow { color: #01A88D; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+  .arrow::after { content: "→"; font-size: 18px; }
+
+  /* ElastiCache container */
+  .ec-container { border: 2px solid #d6b656; border-radius: 12px; background: #fffdf0; padding: 20px; }
+  .ec-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .ec-header img { width: 36px; height: 36px; }
+  .ec-header span { font-size: 15px; font-weight: 700; color: #1a1a2e; }
+  .ec-badge { margin-left: auto; background: #1a1a2e; color: #ffd700; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+
+  /* Index bar */
+  .index-bar { background: #1a1a2e; color: white; border-radius: 8px; padding: 10px 16px; text-align: center; font-size: 13px; font-weight: 600; margin-bottom: 16px; letter-spacing: 0.5px; }
+  .index-bar span { color: #ffd700; }
+
+  /* Two panels */
+  .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .panel { border-radius: 10px; padding: 16px; }
+  .panel-search { background: #00aa44; }
+  .panel-agg { background: #0066cc; }
+
+  .panel-title { color: white; font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 12px; font-family: monospace; }
+
+  .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .chip { background: white; border-radius: 8px; padding: 8px 10px; font-size: 12px; font-weight: 600; text-align: center; line-height: 1.4; }
+  .chip-green { color: #00aa44; border: 1.5px solid #00aa44; }
+  .chip-blue-dark { color: #0066cc; border: 1.5px solid #0066cc; }
+  .chip-purple { color: #7b2d8b; border: 1.5px solid #7b2d8b; }
+  .chip-orange { color: #e07000; border: 1.5px solid #e07000; }
+
+  .panel-footer { background: #1a1a2e; color: #ffd700; border-radius: 6px; padding: 7px; text-align: center; font-size: 11px; font-weight: 700; }
+
+  .note { text-align: center; color: #888; font-size: 12px; margin-top: 14px; font-style: italic; }
+
+  /* Arrows from app to panels */
+  .flow-arrows { display: flex; justify-content: space-around; margin-bottom: 8px; padding: 0 80px; }
+  .flow-arrow { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .flow-arrow .label { font-size: 11px; font-weight: 700; }
+  .flow-arrow .line { width: 2px; height: 20px; }
+  .fa-search .label { color: #00aa44; }
+  .fa-search .line { background: #00aa44; }
+  .fa-agg .label { color: #0066cc; }
+  .fa-agg .line { background: #0066cc; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Amazon ElastiCache Valkey 9.0 — 新功能</h1>
+  <div class="subtitle">实时全文搜索 · 精确匹配 · 数值范围搜索 · 聚合分析 &nbsp;|&nbsp; 免费内置，无需独立搜索服务</div>
+
+  <!-- App row -->
+  <div class="app-row">
+    <div class="app-box">应用 / AI Agent</div>
+    <div style="display:flex;align-items:center;gap:0;">
+      <div style="width:50px;height:2px;background:linear-gradient(90deg,#bbb,#7c3aed);"></div>
+      <span style="font-size:11px;color:#7c3aed;font-weight:700;padding:0 8px;white-space:nowrap;">Embedding</span>
+      <div style="width:50px;height:2px;background:linear-gradient(90deg,#7c3aed,#bbb);"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div style="width:64px;height:64px;background:linear-gradient(135deg,#1e1b4b 0%,#4c1d95 50%,#7c3aed 100%);border-radius:14px;box-shadow:0 4px 16px rgba(124,58,237,0.4);display:flex;align-items:center;justify-content:center;">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <!-- input nodes -->
+          <circle cx="6" cy="10" r="3.5" fill="#a78bfa"/>
+          <circle cx="6" cy="19" r="3.5" fill="#a78bfa"/>
+          <circle cx="6" cy="28" r="3.5" fill="#a78bfa"/>
+          <!-- hidden nodes -->
+          <circle cx="19" cy="7" r="3.5" fill="#c4b5fd"/>
+          <circle cx="19" cy="16" r="3.5" fill="#c4b5fd"/>
+          <circle cx="19" cy="25" r="3.5" fill="#c4b5fd"/>
+          <circle cx="19" cy="34" r="3" fill="#c4b5fd"/>
+          <!-- output node -->
+          <circle cx="32" cy="19" r="4" fill="#ede9fe"/>
+          <!-- connections input→hidden -->
+          <line x1="9.5" y1="10" x2="15.5" y2="7" stroke="#7c3aed" stroke-width="0.8" opacity="0.7"/>
+          <line x1="9.5" y1="10" x2="15.5" y2="16" stroke="#7c3aed" stroke-width="0.8" opacity="0.5"/>
+          <line x1="9.5" y1="19" x2="15.5" y2="7" stroke="#7c3aed" stroke-width="0.8" opacity="0.4"/>
+          <line x1="9.5" y1="19" x2="15.5" y2="16" stroke="#7c3aed" stroke-width="0.8" opacity="0.7"/>
+          <line x1="9.5" y1="19" x2="15.5" y2="25" stroke="#7c3aed" stroke-width="0.8" opacity="0.7"/>
+          <line x1="9.5" y1="28" x2="15.5" y2="16" stroke="#7c3aed" stroke-width="0.8" opacity="0.4"/>
+          <line x1="9.5" y1="28" x2="15.5" y2="25" stroke="#7c3aed" stroke-width="0.8" opacity="0.7"/>
+          <line x1="9.5" y1="28" x2="15.5" y2="34" stroke="#7c3aed" stroke-width="0.8" opacity="0.5"/>
+          <!-- connections hidden→output -->
+          <line x1="22.5" y1="7" x2="28" y2="19" stroke="#a78bfa" stroke-width="0.8" opacity="0.6"/>
+          <line x1="22.5" y1="16" x2="28" y2="19" stroke="#a78bfa" stroke-width="0.8" opacity="0.8"/>
+          <line x1="22.5" y1="25" x2="28" y2="19" stroke="#a78bfa" stroke-width="0.8" opacity="0.8"/>
+          <line x1="22.5" y1="34" x2="28" y2="19" stroke="#a78bfa" stroke-width="0.8" opacity="0.5"/>
+        </svg>
+      </div>
+      <span style="font-size:11px;color:#5b21b6;font-weight:700;letter-spacing:0.5px;">LLM 模型</span>
+    </div>
+  </div>
+
+  <!-- Flow arrows -->
+  <div class="flow-arrows">
+    <div class="flow-arrow fa-search">
+      <div class="label">FT.SEARCH ↓</div>
+      <div class="line"></div>
+    </div>
+    <div class="flow-arrow fa-agg">
+      <div class="label">FT.AGGREGATE ↓</div>
+      <div class="line"></div>
+    </div>
+  </div>
+
+  <!-- ElastiCache container -->
+  <div class="ec-container">
+    <div class="ec-header">
+      <img src="https://icon.icepanel.io/AWS/svg/Database/ElastiCache.svg" onerror="this.style.background='#C7131F';this.style.borderRadius='6px'" alt="ElastiCache">
+      <span>Amazon ElastiCache &nbsp; Valkey 9.0</span>
+      <div class="ec-badge">⚡ 微秒延迟 · 百万 QPS</div>
+    </div>
+
+    <div class="index-bar">
+      FT.CREATE Index &nbsp;·&nbsp; <span>TEXT</span> &nbsp;·&nbsp; <span>TAG</span> &nbsp;·&nbsp; <span>NUMERIC</span> &nbsp;·&nbsp; <span>VECTOR</span>
+      &nbsp;&nbsp;—&nbsp;&nbsp; 写后即搜，同步索引
+    </div>
+
+    <div class="panels">
+      <!-- FT.SEARCH -->
+      <div class="panel panel-search">
+        <div class="panel-title">FT.SEARCH</div>
+        <div class="chips">
+          <div class="chip chip-green">全文搜索<br><small>prefix · fuzzy · phrase</small></div>
+          <div class="chip chip-green">精确匹配<br><small>Tag · ID · Category</small></div>
+          <div class="chip chip-green">数值范围<br><small>price · date · score</small></div>
+          <div class="chip chip-purple">向量 KNN<br><small>混合搜索 · Hybrid</small></div>
+        </div>
+        <div class="panel-footer">⚡ 微秒延迟 · 写后即搜 · 百万 QPS</div>
+      </div>
+
+      <!-- FT.AGGREGATE -->
+      <div class="panel panel-agg">
+        <div class="panel-title">FT.AGGREGATE</div>
+        <div class="chips">
+          <div class="chip chip-blue-dark">GROUPBY<br><small>按维度分组</small></div>
+          <div class="chip chip-blue-dark">REDUCE<br><small>COUNT · SUM · AVG</small></div>
+          <div class="chip chip-blue-dark">APPLY<br><small>计算字段 · 表达式</small></div>
+          <div class="chip chip-orange">Pipeline<br><small>SORTBY · FILTER · LIMIT</small></div>
+        </div>
+        <div class="panel-footer">📊 实时聚合 · 无需独立分析引擎 · 免费</div>
+      </div>
+    </div>
+
+    <div class="note">↑ 同一个 FT.CREATE 索引，搜索和聚合共用，无需重复建索引</div>
+  </div>
+</div>
+</body>
+</html>
